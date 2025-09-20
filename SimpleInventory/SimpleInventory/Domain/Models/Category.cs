@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SimpleInventory.Models
+namespace SimpleInventory.Domain.Models
 {
     public class Category
     {

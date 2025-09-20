@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SimpleInventory.Models;
+using SimpleInventory.Domain.Models;
 
-namespace SimpleInventory.Configuration
+namespace SimpleInventory.Domain.Configuration
 {
     public class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
@@ -13,6 +13,8 @@ namespace SimpleInventory.Configuration
             builder.Property(x=>x.Sku).IsRequired();
 
             builder.Property(x => x.Sku).HasMaxLength(32);
+
+            builder.HasIndex(x => x.Sku).IsUnique();
 
             builder.Property(x=>x.Name).IsRequired();
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SimpleInventory.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250920193734_Add-Sku-field-unique")]
+    partial class AddSkufieldunique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.9");
@@ -65,6 +68,9 @@ namespace SimpleInventory.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
 
                     b.ToTable("Product");
                 });

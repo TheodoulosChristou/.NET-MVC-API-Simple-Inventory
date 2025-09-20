@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SimpleInventory.Configuration;
-using SimpleInventory.Models;
-
+using SimpleInventory.Domain.Configuration;
+using SimpleInventory.Domain.Models;
 
 public class InventoryDbContext : DbContext
 {

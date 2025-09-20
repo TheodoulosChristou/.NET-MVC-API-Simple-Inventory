@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SimpleInventory.Models;
+using SimpleInventory.Domain.Models;
 
 namespace SimpleInventory.Controllers
 {

@@ -1,4 +1,4 @@
-namespace SimpleInventory.Models
+namespace SimpleInventory.Domain.Models
 {
     public class ErrorViewModel
     {

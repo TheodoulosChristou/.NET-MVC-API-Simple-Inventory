@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SimpleInventory.Models;
+using SimpleInventory.Domain.Models;
 
-namespace SimpleInventory.Configuration
+namespace SimpleInventory.Domain.Configuration
 {
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {

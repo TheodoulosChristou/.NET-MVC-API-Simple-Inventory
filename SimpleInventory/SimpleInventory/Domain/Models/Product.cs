@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Server.HttpSys;
 
-namespace SimpleInventory.Models
+namespace SimpleInventory.Domain.Models
 {
     public class Product
     {
