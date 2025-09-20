@@ -13,9 +13,12 @@ public class InventoryDbContext : DbContext
 
         public DbSet<Product> Product {  get; set; }
 
+        public DbSet<Category> Category { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
         }
 }
