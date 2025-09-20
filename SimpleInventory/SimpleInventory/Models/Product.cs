@@ -15,5 +15,9 @@ namespace SimpleInventory.Models
         public int Quantity { get; set; }
 
         public DateTime UpdatedAt { get; set; }
+
+        public int CategoryId { get; set; }
+
+        public Category? Category { get; set; }
     }
 }

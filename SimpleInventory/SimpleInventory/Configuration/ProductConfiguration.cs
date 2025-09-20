@@ -17,6 +17,11 @@ namespace SimpleInventory.Configuration
             builder.Property(x=>x.Name).IsRequired();
 
             builder.Property(x => x.Price).HasPrecision(18, 2);
+
+            builder.HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p=>p.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
