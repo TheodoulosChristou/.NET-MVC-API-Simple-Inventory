@@ -5,7 +5,7 @@ using SimpleInventory.Domain.Services;
 
 namespace SimpleInventory.Controllers
 {
-    [Route("Category")]     // URLs: /Category, /Category/Create
+    [Route("Category")]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _categoryService;
@@ -19,7 +19,7 @@ namespace SimpleInventory.Controllers
         public async Task<IActionResult> Index()
         {
             var categories = _categoryService.getAllCategories();
-            return View(categories);  // Views/Category/Index.cshtml
+            return View(categories);
         }
 
         // GET /Category/Create

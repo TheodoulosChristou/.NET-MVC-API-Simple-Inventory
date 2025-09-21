@@ -46,9 +46,10 @@
 
                     <div class="mb-3">
                         <label asp-for="CategoryId" class="form-label">Category</label>
-                        <input asp-for="CategoryId" class="form-control" />
+                        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories"></select>
                         <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
+
 
                     <div class="mb-3">
                         <label asp-for="UpdatedAt" class="form-label">Updated At</label>

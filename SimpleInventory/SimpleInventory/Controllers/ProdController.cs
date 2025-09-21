@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SimpleInventory.Domain.DTOs;
 using SimpleInventory.Domain.Services;
 
@@ -8,37 +9,39 @@ namespace SimpleInventory.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, ICategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
 
-        // GET /Prod
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
-            var result = await _productService.getAllProducts(
-                null, null, null, 1, 10);
-
+            var result = await _productService.getAllProducts(null, null, null, 1, 10);
             return View("~/Views/Product/Index.cshtml", result);
         }
 
-        // GET /Prod/Create
+        // ---------- CREATE ----------
         [HttpGet("Create")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            // If you want UpdatedAt prefilled:
+            await LoadCategoriesAsync();
             return View("~/Views/Product/Create.cshtml", new ProductDTO { UpdatedAt = DateTime.UtcNow });
         }
 
-        // POST /Prod/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(ProductDTO model)
         {
+            if (model.CategoryId <= 0)
+                ModelState.AddModelError(nameof(model.CategoryId), "Please select a category.");
+
             if (!ModelState.IsValid)
             {
+                await LoadCategoriesAsync();
                 return View("~/Views/Product/Create.cshtml", model);
             }
 
@@ -46,13 +49,14 @@ namespace SimpleInventory.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // ---------- EDIT ----------
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
-            var product = _productService.getProductById(id);
-            if (product == null)
-                return NotFound();
+            var product = _productService.getProductById(id);   // await
+            if (product == null) return NotFound();
 
+            await LoadCategoriesAsync(product.CategoryId);
             return View("~/Views/Product/Edit.cshtml", product);
         }
 
@@ -63,13 +67,20 @@ namespace SimpleInventory.Controllers
             if (id != model.Id)
                 return BadRequest("Route id and model id do not match.");
 
-            if (!ModelState.IsValid)
-                return View("~/Views/Product/Edit.cshtml", model);
+            if (model.CategoryId <= 0)
+                ModelState.AddModelError(nameof(model.CategoryId), "Please select a category.");
 
-            await _productService.updateProduct(model);  // await!
+            if (!ModelState.IsValid)
+            {
+                await LoadCategoriesAsync(model.CategoryId);
+                return View("~/Views/Product/Edit.cshtml", model);
+            }
+
+            await _productService.updateProduct(model);
             return RedirectToAction(nameof(Index));
         }
 
+        // ---------- DELETE ----------
         [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -85,17 +96,36 @@ namespace SimpleInventory.Controllers
         {
             try
             {
-                await _productService.deleteProductById(id); 
+                await _productService.deleteProductById(id);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                
                 ModelState.AddModelError(string.Empty, ex.Message);
                 var product = _productService.getProductById(id);
                 if (product == null) return RedirectToAction(nameof(Index));
                 return View("~/Views/Product/Delete.cshtml", product);
             }
+        }
+
+        // ---------- helper ----------
+        private async Task LoadCategoriesAsync(int? selectedId = null)
+        {
+            // If your service is async:
+            // var cats = await _categoryService.GetAllAsync();
+
+            // If your service is sync (as per your snippet):
+            var cats = _categoryService.getAllCategories();
+
+            ViewBag.Categories = cats
+                .Select(c => new SelectListItem
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                    Selected = selectedId.HasValue && c.Id == selectedId.Value
+                })
+                .Prepend(new SelectListItem { Text = "-- select category --", Value = "" })
+                .ToList();
         }
     }
 }
