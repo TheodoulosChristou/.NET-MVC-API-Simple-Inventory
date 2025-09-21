@@ -1,0 +1,49 @@
+﻿@using SimpleInventory.Domain.Responses
+@model ProductGetResult
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1 class="text-center">List of Products</h1>
+
+<a class="btn btn-primary mb-1" asp-controller="Prod" asp-action="Create">New Product</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>SKU</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Category ID</th>
+            <th>Updated At</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="table-group-divider">
+        @if (Model?.items == null || !Model.items.Any())
+        {
+            <tr><td colspan="8" class="text-center text-muted">No products found.</td></tr>
+        }
+        else
+        {
+            foreach (var product in Model.items)
+            {
+                <tr>
+                    <td>@product.Id</td>
+                    <td>@product.Sku</td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Quantity</td>
+                    <td>@product.CategoryId</td>
+                    <td>@product.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td style="white-space:nowrap">
+                        <a class="btn btn-primary btn-sm" asp-controller="Prod" asp-action="Edit" asp-route-id="@product.Id">Edit</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Prod" asp-action="Delete" asp-route-id="@product.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

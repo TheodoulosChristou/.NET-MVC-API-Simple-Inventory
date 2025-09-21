@@ -37,9 +37,8 @@ app.MapOpenApi();              // -> /openapi/v1.json
 app.MapScalarApiReference(opts =>
 {
     opts.Title = "SimpleInventory API";
-    opts.Theme = ScalarTheme.Kepler;   // pick a theme you like
-    // opts.DefaultHttpClient.BaseUrl = "/"; // optional
-});                                    // -> /scalar
+    opts.Theme = ScalarTheme.Kepler;  
+});                          
 
 // MVC routes
 app.MapControllerRoute(
