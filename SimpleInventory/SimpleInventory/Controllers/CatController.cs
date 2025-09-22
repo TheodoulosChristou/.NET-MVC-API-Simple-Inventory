@@ -14,7 +14,7 @@ namespace SimpleInventory.Controllers
             _categoryService = categoryService;
         }
 
-        // GET /Category
+
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
@@ -22,14 +22,14 @@ namespace SimpleInventory.Controllers
             return View(categories);
         }
 
-        // GET /Category/Create
+
         [HttpGet("Create")]
         public IActionResult Create()
         {
             return View(new Category());
         }
 
-        // POST /Category/Create
+        
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category model)

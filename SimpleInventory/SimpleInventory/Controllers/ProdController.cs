@@ -24,7 +24,7 @@ namespace SimpleInventory.Controllers
             return View("~/Views/Product/Index.cshtml", result);
         }
 
-        // ---------- CREATE ----------
+
         [HttpGet("Create")]
         public async Task<IActionResult> Create()
         {
@@ -49,11 +49,10 @@ namespace SimpleInventory.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ---------- EDIT ----------
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int id)
         {
-            var product = _productService.getProductById(id);   // await
+            var product = _productService.getProductById(id); 
             if (product == null) return NotFound();
 
             await LoadCategoriesAsync(product.CategoryId);
@@ -108,13 +107,8 @@ namespace SimpleInventory.Controllers
             }
         }
 
-        // ---------- helper ----------
         private async Task LoadCategoriesAsync(int? selectedId = null)
         {
-            // If your service is async:
-            // var cats = await _categoryService.GetAllAsync();
-
-            // If your service is sync (as per your snippet):
             var cats = _categoryService.getAllCategories();
 
             ViewBag.Categories = cats
